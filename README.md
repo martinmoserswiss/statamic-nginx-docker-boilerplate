@@ -24,7 +24,16 @@ Option 2: Create new statamic project in app/:
 composer create-project statamic/statamic app
 ```
 
-3. Create setup:
+3. Create and adjust .env file
+```bash
+cp .env.example .env
+nano .env
+
+APP_URL=http://localhost:8081
+STATAMIC_PRO_ENABLED=true
+````
+
+4. Create setup:
 ```bash
 make setup
 ```
