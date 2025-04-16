@@ -1,0 +1,7 @@
+# app-Inhalte ignorieren
+/app/*
+!/app/.gitkeep
+
+# node_modules und vendor aus der App ignorieren
+/app/node_modules
+/app/vendor
