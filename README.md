@@ -1,30 +1,40 @@
-# Statamic Docker Boilerplate 🐳
+# Statamic nginx docker boilerplate 🐳
 
-Dieses Repository enthält ein vollständiges Docker-Setup für Statamic.
+A production-ready and developer-friendly boilerplate for running [Statamic CMS](https://statamic.com) inside Docker using Nginx and PHP 8.2.
 
-## 🚀 Verwendung
+This setup includes:
 
-Option 1: Projekt als /app klonen:
+- 🐳 Docker Compose-based environment
+- ⚙️ PHP 8.2 with all required extensions
+- 🌐 Nginx as web server
+- 📦 Composer for PHP dependencies
+- 🧩 Node.js with npm for asset compilation (Vite)
+- 🛠 Scripts for setup and deployment
+- 🧹 Preconfigured permissions & Laravel cache handling
+
+## 🚀 Usage
+
+Option 1: Clone existing statamic project as /app :
 ```bash
 git clone git@github.com:your-user/your-project.git app
 ```
 
-Option 2: Statamic Projekt in app/ erstellen
+Option 2: Create new statamic project in app/:
 ```bash
 composer create-project statamic/statamic app
 ```
 
-3. Setup starten:
+3. Create setup:
 ```bash
 make setup
 ```
 
-## 📁 Ordnerstruktur
+## 📁 Folder structure
 ```bash
-├── app/               # Statamic-Projekt
+├── app/               # Statamic-Projecct
 ├── docker-compose.yml
 ├── php/               # PHP-FPM Dockerfile
 ├── nginx/             # Nginx Config
 ├── scripts/           # setup.sh & deploy.sh
-├── Makefile           # praktische Helferlein
+├── Makefile           # Usable commands
 ````
