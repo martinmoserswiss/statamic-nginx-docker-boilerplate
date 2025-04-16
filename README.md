@@ -14,6 +14,15 @@ This setup includes:
 
 ## 🚀 Usage
 
+1. Clone this repo
+```bash
+git clone git@github.com:martinmoserswiss/statamic-nginx-docker-boilerplate.git ProjectName
+cd ProjectName
+rm -rf app
+```
+
+Then you have to options:
+
 Option 1: Clone existing statamic project as /app :
 ```bash
 git clone git@github.com:your-user/your-project.git app
@@ -26,15 +35,19 @@ composer create-project statamic/statamic app
 
 3. Create and adjust .env file
 ```bash
+cd app
 cp .env.example .env
 nano .env
 
 APP_URL=http://localhost:8081
-STATAMIC_PRO_ENABLED=true
+
+cd ..
 ````
 
 4. Create setup:
 ```bash
+docker compose down
+docker compose build --no-cache
 make setup
 ```
 
