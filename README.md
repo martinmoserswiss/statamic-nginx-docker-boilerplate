@@ -33,18 +33,18 @@ Option 2: Create new statamic project in app/:
 composer create-project statamic/statamic app
 ```
 
-3. Create and adjust .env file
+3. Create and adjust .env file with the correct APP_URL
 ```bash
-cd app
-cp .env.example .env
-nano .env
-
 APP_URL=http://localhost:8081
-
-cd ..
 ````
 
-4. Create setup:
+4. Adjust nginx config if SSL should be off
+```bash
+vim nginx/default.conf
+fastcgi_param HTTPS off;
+````
+
+5. Create setup:
 ```bash
 docker compose down
 docker compose build --no-cache
