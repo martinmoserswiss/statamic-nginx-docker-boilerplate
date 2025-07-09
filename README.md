@@ -14,14 +14,14 @@ This setup includes:
 
 ## ⚒️ Installation
 
-### Clone this repo
+### 1. Clone this repo
 ```bash
 git clone git@github.com:martinmoserswiss/statamic-nginx-docker-boilerplate.git ProjectName
 cd ProjectName
 rm -rf app
 ```
 
-### Install Statamic project
+### 2. Install Statamic project
 
 **Option 1: Clone existing**
 ```bash
@@ -33,7 +33,7 @@ git clone git@github.com:your-user/your-project.git app
 composer create-project statamic/statamic app
 ```
 
-### Prepare Docker environment
+### 3. Prepare Docker environment
 
 1. Adjust container_name to your project name
 1. Adjust port 8081 to the needes of your environment. Or leave as it is.
@@ -71,7 +71,7 @@ networks:
     driver: bridge
 ```
 
-### Prepare Webserver
+### 4. Prepare Webserver
 
 Set fastcgi_param HTTPS to `on` or `off`.
 
@@ -104,7 +104,7 @@ server {
 }
 ```
 
-### Prepare Statamic
+### 5. Prepare Statamic
 
 Adjust port of your application
 
@@ -112,7 +112,35 @@ Adjust port of your application
 APP_URL=http://localhost:8081
 ```
 
-### Complete setup
+### 6. Complete setup
 ```bash
 make setup
+```
+
+## 🚀 Usage
+
+### Start application
+
+```bash
+cd app
+npm run dev
+```
+
+## ⚒️ Maintainance
+
+### Stop containers
+
+`docker compose down`
+
+### Start containers
+
+`docker compose up -d --build`
+
+### Clear Statamic environment
+
+```bash
+cd app
+php artisan view:clear      
+php artisan config:clear
+php artisan cache:clear
 ```
