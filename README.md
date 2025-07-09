@@ -12,7 +12,7 @@ This setup includes:
 - 🛠 Scripts for setup and deployment
 - 🧹 Preconfigured permissions & Laravel cache handling
 
-## 🚀 Usage
+## ⚒️ Installation
 
 ### Clone this repo
 ```bash
@@ -112,9 +112,7 @@ Adjust port of your application
 APP_URL=http://localhost:8081
 ```
 
-5. Create setup:
+### Complete setup
 ```bash
-docker compose down
-docker compose up -d --build
 make setup
 ```
