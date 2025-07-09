@@ -14,49 +14,107 @@ This setup includes:
 
 ## 🚀 Usage
 
-1. Clone this repo
+### Clone this repo
 ```bash
 git clone git@github.com:martinmoserswiss/statamic-nginx-docker-boilerplate.git ProjectName
 cd ProjectName
 rm -rf app
 ```
 
-Then you have to options:
+### Install Statamic project
 
-Option 1: Clone existing statamic project as /app :
+**Option 1: Clone existing**
 ```bash
 git clone git@github.com:your-user/your-project.git app
 ```
 
-Option 2: Create new statamic project in app/:
+**Option 2: Create new**
 ```bash
 composer create-project statamic/statamic app
 ```
 
-3. Create and adjust .env file with the correct APP_URL
+### Prepare Docker environment
+
+1. Adjust container_name to your project name
+1. Adjust port 8081 to the needes of your environment. Or leave as it is.
+
+Open `docker-compose.yml`
+
+```bash
+services:
+  app:
+    build:
+      context: ./php
+    container_name: statamic_app_projectname
+    volumes:
+      - ./app:/app
+    working_dir: /app
+    user: "1000:33"
+    networks:
+      - statamic_net
+
+  web:
+    image: nginx:stable-alpine
+    container_name: statamic_web_projectname
+    ports:
+      - "8081:80"
+    volumes:
+      - ./app:/app
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - statamic_net
+
+networks:
+  statamic_net:
+    driver: bridge
+```
+
+### Prepare Webserver
+
+Set fastcgi_param HTTPS to `on` or `off`.
+
+```bash
+server {
+    listen 80;
+    server_name localhost;
+    root /app/public;
+
+    index index.php index.html;
+
+    charset utf-8;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass app:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_param HTTPS off;
+    }
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
+```
+
+### Prepare Statamic
+
+Adjust port of your application
+
 ```bash
 APP_URL=http://localhost:8081
-````
-
-4. Adjust nginx config if SSL should be off
-```bash
-vim nginx/default.conf
-fastcgi_param HTTPS off;
-````
+```
 
 5. Create setup:
 ```bash
 docker compose down
-docker compose build --no-cache
+docker compose up -d --build
 make setup
 ```
-
-## 📁 Folder structure
-```bash
-├── app/               # Statamic-Projecct
-├── docker-compose.yml
-├── php/               # PHP-FPM Dockerfile
-├── nginx/             # Nginx Config
-├── scripts/           # setup.sh & deploy.sh
-├── Makefile           # Usable commands
-````

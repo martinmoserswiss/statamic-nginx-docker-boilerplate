@@ -25,13 +25,17 @@ RUN apt-get update && apt-get install -y \
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
-# PHP Extensions installieren
-RUN docker-php-ext-install \
+# PHP Extensions installieren (inkl. GD mit JPEG & FreeType)
+RUN docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg \
+ && docker-php-ext-install \
     zip \
     pdo \
     pdo_mysql \
     bcmath \
-    intl
+    intl \
+    gd
 
 # Composer installieren (über offiziellen Composer-Container)
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
