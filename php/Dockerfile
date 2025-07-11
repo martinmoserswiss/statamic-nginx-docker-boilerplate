@@ -35,7 +35,8 @@ RUN docker-php-ext-configure gd \
     pdo_mysql \
     bcmath \
     intl \
-    gd
+    gd \
+    exif
 
 # Composer installieren (über offiziellen Composer-Container)
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

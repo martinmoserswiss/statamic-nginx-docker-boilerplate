@@ -2,17 +2,17 @@ services:
   app:
     build:
       context: ./php
-    container_name: statamic_app
+    container_name: flow-cms-statamic
     volumes:
       - ./app:/app
     working_dir: /app
     user: "1000:33"
     networks:
-      - statamic_net
+      - flow_net
 
   web:
     image: nginx:stable-alpine
-    container_name: statamic_web
+    container_name: flow-cms-webserver
     ports:
       - "8081:80"
     volumes:
@@ -21,8 +21,8 @@ services:
     depends_on:
       - app
     networks:
-      - statamic_net
+      - flow_net
 
 networks:
-  statamic_net:
-    driver: bridge
+  flow_net:
+    external: true
