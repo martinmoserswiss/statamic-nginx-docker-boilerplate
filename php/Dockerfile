@@ -44,4 +44,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # NPM Cache-Verzeichnis umlegen (damit nicht /.npm verwendet wird)
 ENV npm_config_cache=/app/.npm
 
+# PsySH-Konfig in /tmp schreiben (damit Tinker nicht abstürzt)
+ENV XDG_CONFIG_HOME=/tmp
+
+# PHP upload limits anpassen
+COPY ./php.ini /usr/local/etc/php/conf.d/uploads.ini
+
 WORKDIR /app
