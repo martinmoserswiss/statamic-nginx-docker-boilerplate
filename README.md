@@ -9,113 +9,89 @@ This setup includes:
 - 🌐 Nginx as web server
 - 📦 Composer for PHP dependencies
 - 🧩 Node.js with npm for asset compilation (Vite)
-- 🛠 Scripts for setup and deployment
 - 🧹 Preconfigured permissions & Laravel cache handling
+
+## Prerequisite
+
+You need a unix VM with root access, where the following tools are installed:
+- `Docker` and `Docker Compose`
+- `Nginx`
+- An editor like `vim`
 
 ## ⚒️ Installation
 
 ### 1. Clone this repo
 ```bash
-git clone git@github.com:martinmoserswiss/statamic-nginx-docker-boilerplate.git ProjectName
-cd ProjectName
-rm -rf app
+git clone git@github.com:martinmoserswiss/statamic-nginx-docker-boilerplate.git project-name
 ```
 
-### 2. Install Statamic project
+### 2. Navigate to the project directory
 
-**Option 1: Clone existing**
+```bash
+cd project-name
+```
+
+### 3. Clone existing Statamic project
+
 ```bash
 git clone git@github.com:your-user/your-project.git app
 ```
 
-**Option 2: Create new**
+### 4. Prepare Docker environment
+
+Open `docker-compose.yml` file.
+
+1. Adjust container_name of the statamic service
+1. Adjust container_name of the web server
+1. Adjust port 8080
+
+### 5. Prepare Domain
+
+1. Login to your Hoster where you can manage your domain zone file.
+1. Create A records for both the root domain and the “www” subdomain. For example:
+- my-project.com → A record pointing to your server’s IP
+- www.my-project.com → A record pointing to the same IP
+
+### 6. Prepare Reverse Proxy
+
+1. Navigate to your host nginx config folder `/etc/nginx/sites-available/`
+1. Copy the `SAMPLE_my-project.com` to this folder
+1. Rename the file to the name of your root domain like `my-project.com`
+1. Adjust the `server_name` inside the file.
+1. Adjust the port of `proxy_pass` to the port which was defined in docker-compose.
+1. Activate the domain:
 ```bash
-composer create-project statamic/statamic app
+sudo ln -s /etc/nginx/sites-available/my-project.com /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
 ```
 
-### 3. Prepare Docker environment
+### 7. Create SSL-Certs with Certbot
 
-1. Adjust container_name to your project name
-1. Adjust port 8081 to the needes of your environment. Or leave as it is.
+1. sudo certbot --nginx -d www.my-project.com -d my-project.com
 
-Open `docker-compose.yml`
+### 6. Prepare Statamic
 
-```bash
-services:
-  app:
-    build:
-      context: ./php
-    container_name: statamic_app_projectname
-    volumes:
-      - ./app:/app
-    working_dir: /app
-    user: "1000:33"
-    networks:
-      - statamic_net
+1. Navigate back to your statamic project inside your folder: `cd ~/project-name/app`
+1. Create a copy of the .env file: `cp .env.example .env`
+1. Edit the .env file: `vim .env``
+1. Adjust `APP_NAME` --> name it without special caracters like `MyProject`
+1. Adjust `APP_URL` --> https://my-project.com
+1. If needed adjust `STATAMIC_LICENSE_KEY` or `STATAMIC_PRO_ENABLED`
 
-  web:
-    image: nginx:stable-alpine
-    container_name: statamic_web_projectname
-    ports:
-      - "8081:80"
-    volumes:
-      - ./app:/app
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-    depends_on:
-      - app
-    networks:
-      - statamic_net
+### 7. Build and start the container
 
-networks:
-  statamic_net:
-    driver: bridge
-```
+1. Navigate to the project folder where docker-compose.yml is saved.
+1. Build the container `docker compose build`
+1. Start the container `docker compose up -d`
+1. You see your container when running `docker ps -a`
 
-### 4. Prepare Webserver
+### 8. Install statamic
 
-Set fastcgi_param HTTPS to `on` or `off`.
-
-```bash
-server {
-    listen 80;
-    server_name localhost;
-    root /app/public;
-
-    index index.php index.html;
-
-    charset utf-8;
-
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
-
-    location ~ \.php$ {
-        fastcgi_pass app:9000;
-        fastcgi_index index.php;
-        include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_param PATH_INFO $fastcgi_path_info;
-        fastcgi_param HTTPS off;
-    }
-
-    location ~ /\.(?!well-known).* {
-        deny all;
-    }
-}
-```
-
-### 5. Prepare Statamic
-
-Adjust port of your application
-
-```bash
-APP_URL=http://localhost:8081
-```
-
-### 6. Complete setup
-```bash
-make setup
-```
+1. Connect to your container with bash: `docker exec -it my-project bash`
+1. Install statamic `composer install`
+1. Create `APP_KEY` with `php artisan key:generate`
+1. Download npm dependencies `npm install`
+1. Build your npm project `npm run build`
 
 ## 🚀 Usage
 
@@ -134,7 +110,7 @@ npm run dev
 
 ### Start containers
 
-`docker compose up -d --build`
+`docker compose up -d`
 
 ### Clear Statamic environment
 
