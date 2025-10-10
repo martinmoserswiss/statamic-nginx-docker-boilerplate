@@ -73,7 +73,7 @@ sudo nginx -t && sudo systemctl reload nginx
 
 1. Navigate back to your statamic project inside your folder: `cd ~/project-name/app`
 1. Create a copy of the .env file: `cp .env.example .env`
-1. Edit the .env file: `vim .env``
+1. Edit the .env file: `vim .env`
 1. Adjust `APP_NAME` --> name it without special caracters like `MyProject`
 1. Adjust `APP_URL` --> https://my-project.com
 1. If needed adjust `STATAMIC_LICENSE_KEY` or `STATAMIC_PRO_ENABLED`
@@ -89,7 +89,7 @@ sudo nginx -t && sudo systemctl reload nginx
 
 1. Connect to your container with bash: `docker exec -it my-project bash`
 1. Install statamic `composer install`
-1. Create `APP_KEY` with `php artisan key:generate`
+1. Run `php artisan key:generate` so that the app key can be generated
 1. Download npm dependencies `npm install`
 1. Build your npm project `npm run build`
 
