@@ -67,7 +67,7 @@ sudo nginx -t && sudo systemctl reload nginx
 
 ### 7. Create SSL-Certs with Certbot
 
-1. sudo certbot --nginx -d www.my-project.com -d my-project.com
+1. `sudo certbot --nginx -d www.my-project.com -d my-project.com`
 
 ### 6. Prepare Statamic
 
