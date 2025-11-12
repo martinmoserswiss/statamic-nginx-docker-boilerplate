@@ -55,7 +55,7 @@ Open `docker-compose.yml` file.
 ### 6. Prepare Reverse Proxy
 
 1. Copy the `SAMPLE_my-project.com` to the host nginx config folder `sudo cp SAMPLE_my-project.com /etc/nginx/sites-available/`
-1. Rename the file to the name of your root domain like `my-project.com`
+1. Rename the file to the name of your root domain like `sudo mv SAMPLE_my-project.com my-project.com`
 1. Adjust the `server_name` inside the file.
 1. Adjust the port of `proxy_pass` to the port which was defined in docker-compose.
 1. Activate the domain:
