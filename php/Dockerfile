@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.5-fpm
 
 # Install system packages & Node.js (via Nodesource)
 RUN apt-get update && apt-get install -y \
@@ -21,8 +21,8 @@ RUN apt-get update && apt-get install -y \
     zlib1g-dev \
     lsb-release
 
-# Node.js 18 installieren (statt kaputte Debian-Version)
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+# Node.js 20 installieren
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs
 
 # PHP Extensions installieren (inkl. GD mit JPEG & FreeType)

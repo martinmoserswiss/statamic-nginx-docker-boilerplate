@@ -1,11 +1,11 @@
 # Statamic nginx docker boilerplate 🐳
 
-A production-ready and developer-friendly boilerplate for running [Statamic CMS](https://statamic.com) inside Docker using Nginx and PHP 8.2.
+A production-ready and developer-friendly boilerplate for running [Statamic CMS](https://statamic.com) inside Docker using Nginx and PHP 8.5.
 
 This setup includes:
 
 - 🐳 Docker Compose-based environment
-- ⚙️ PHP 8.2 with all required extensions
+- ⚙️ PHP 8.5 with all required extensions (Statamic 6 ready)
 - 🌐 Nginx as web server
 - 📦 Composer for PHP dependencies
 - 🧩 Node.js with npm for asset compilation (Vite)
